@@ -1,8 +1,14 @@
-public class Conta {
+//Classe Base
+//Abstração dessa classe garante que ninguem vai instanciar elas
+//Só pode extanciar suas subclasses
+public abstract class Conta implements Servicos {
 
-    private int agencia;
-    private int numero;
-    private int saldo;
+
+    protected int agencia;
+    protected int numero;
+    protected double saldo;
+
+    protected Cliente cliente;
 
     //só os Get, por não ter a necessidade de outros alterarem os dados
     public int getAgencia() {
@@ -11,15 +17,50 @@ public class Conta {
     public int getNumero() {
         return numero;
     }
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void sacar() {
-    }
-    public void depositar() {
-    }
-    public void transferir() {
+    public Cliente getCliente() {
+        return cliente;
     }
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    private static final int AGENCIA_PADRAO = 1;
+    private static int SEQUENCIAL = 1;
+
+    public  Conta(Cliente cliente){
+        //Criando conta
+        this.agencia = Conta.AGENCIA_PADRAO;
+        this.numero = SEQUENCIAL++;
+        this.cliente = cliente;
+    }
+
+
+    @Override
+    public void sacar(double valor) {
+        saldo -= valor;
+    }
+
+    @Override
+    public void depositar(double valor) {
+        saldo -= valor;
+    }
+
+    @Override
+    public void transferir(double valor, Conta contaDestino) {
+        this.sacar(valor);
+        contaDestino.depositar(valor);
+
+    }
+
+    protected void imprimirInformacoes() {
+        System.out.println("Titular: " + cliente.getNome());
+        System.out.println(String.format("Agencia: %d", this.agencia) );
+        System.out.println(String.format("Número: %d", this.numero));
+        System.out.println(String.format("Saldo: %.2f", this.saldo));
+    }
 }
