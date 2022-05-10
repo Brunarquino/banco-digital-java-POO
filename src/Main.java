@@ -1,110 +1,100 @@
 
-import javax.swing.*;
 import java.util.*;
 
 
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
-		Conta poupanca = null;
-		Conta corrente = null;
+		Scanner scan = new Scanner(System.in);
 
-		System.out.println("\t----Seja Bem Vindo(a) ao Banco digital BA----\t");
-		System.out.println("\t Vamos criar uma conta? \t");
-		System.out.println("\t Digite seu nome: \t");
-		String nome = scan.next();
-		Cliente cliente= new Cliente();
-		cliente.setNome(nome);
+		Integer numeroAcesso = 1000;
+		Integer clienteNumeroAcesso = 0;
 
-		System.out.println("Deseja criar uma conta:");
-		System.out.println("1 - Corrente");
-		System.out.println("2 - Poupança");
-		int tipoDeConta = scan.nextInt();
-		String contaCriada = "";
+		Map<Integer, Conta> contasPoupanca = new HashMap<>();
+		Map<Integer, Conta> contasCorrente = new HashMap<>();
+		int resposta = 0;
 
-		switch (tipoDeConta){
-			case 1:
-				corrente = new Corrente(cliente);
-				contaCriada = "corrente";
-				System.out.println("Conta Corrente criada!");
-				corrente.imprimirExtrato();
-				System.out.println("Deseja criar uma conta poupança também?");
-				break;
-			case 2:
-				poupanca = new Poupanca(cliente);
-				System.out.println("Conta Poupança criada!");
-				contaCriada = "poupanca";
-				poupanca.imprimirExtrato();
-				System.out.println("Deseja criar uma conta Corrente também?");
-				break;
-			default:
-				break;
-		}
-		System.out.println("1 - Sim");
-		System.out.println("2 - Não");
-		int resposta = scan.nextInt();
+		do{
 
-		if(resposta == 1){
-			switch(contaCriada){
-				case "corrente":
-					poupanca = new Poupanca(cliente);
-					System.out.println("Conta Popança Criada!");
-					poupanca.imprimirExtrato();
-					break;
-				case "poupanca":
-					corrente = new Corrente(cliente);
-					System.out.println("Conta Corrente Criada!");
-					corrente.imprimirExtrato();
-					break;
-				default:
-					break;
-			}
-		}
+			do {
+				System.out.println("\t===== Banco Digital BA =====\t");
+				System.out.println("\t==== Seja Bem vindo(a)! ====\t");
+				System.out.println("1 - Acessar Conta");
+				System.out.println("2 - Criar Conta");
+				String respostaS = scan.nextLine();
+				try {
+					resposta = Integer.parseInt(respostaS);
 
-		do {
-			System.out.println(cliente.getNome() + ", Qual conta deseja acessar?");
-			System.out.println("1 - Corrente");
-			System.out.println("2 - Poupança");
-			System.out.println("0 - sair");
-			resposta = scan.nextInt();
+				}catch (NumberFormatException e){
+					System.out.println("\n");
+				}
+				if(resposta != 1 & resposta != 2){
+					System.out.println("Valor Invalido!");
+				}
+			}while (resposta != 1 & resposta != 2);
 
-			int numeroConta = 0;
 
 			switch (resposta){
 				case 1:
+					System.out.println("Digite seu número de Identificação");
+					clienteNumeroAcesso  = scan.nextInt();
+					AcessarConta(clienteNumeroAcesso);
 					break;
 				case 2:
+					numeroAcesso++;
+					System.out.println("Digite seu nome: ");
+					String nome = scan.nextLine();
+					Cliente cliente = new Cliente();
+					cliente.setNome(nome);
+					resposta = decidirQualTipoDeContaCriar(resposta, nome, numeroAcesso, scan);
 
+					switch (resposta){
+						case 1:
+							contasCorrente.put(numeroAcesso, new Corrente(cliente, 0d));
+
+							break;
+						case 2:
+							contasPoupanca.put(numeroAcesso, new Poupanca(cliente, 0d));
+							break;
+						default:
+							break;
+					}
 					break;
 				default:
-					System.exit(0);
 					break;
 			}
 
-			System.out.println(cliente.getNome() + ", Deseja realizar qual serviços na sua conta?");
-			System.out.println("1 - Depositar");
-			System.out.println("2 - Sacar");
-			System.out.println("3 - tranferir");
-			System.out.println("4 - Imprimir Extrato");
-			System.out.println("0 - sair");
-			resposta = scan.nextInt();
-
-
-
-		}while (resposta == 0);
-
-		System.out.println("Finalizando Sistema...");
-
-//		cc.depositar(100);
-//        cc.sacar(100);
-//
-//
-//		cc.imprimirExtrato();
-//		poupanca.imprimirExtrato();
-
-
+		}while (resposta == 100);
 
     }
+
+	private static int decidirQualTipoDeContaCriar(int resposta, String nome, Integer numeroAcesso, Scanner scan) {
+		do {
+			System.out.println("\n" + nome + " seu Numero de Acesso é " + numeroAcesso);
+			System.out.println("Deseja criar uma conta ");
+			System.out.println("1 - Corrente");
+			System.out.println("2 - Poupança");
+			String respostaS = scan.nextLine();
+			try {
+				resposta = Integer.parseInt(respostaS);
+
+			}catch (NumberFormatException e){
+				System.out.println("\n");
+			}
+			if(resposta != 1 & resposta != 2){
+				System.out.println("Valor Invalido!");
+			}
+		}while (resposta != 1 & resposta != 2);
+
+		return resposta;
+	}
+
+	private static void AcessarConta(Integer ClienteNumeroAcesso) {
+
+	}
+
+
+		
+
 
 }

@@ -2,8 +2,22 @@
 public class Poupanca extends Conta{
 
 
+    public Poupanca(Cliente cliente, double saldo) {
+        super(cliente, saldo);
+    }
+
     public Poupanca(Cliente cliente) {
         super(cliente);
+    }
+
+    @Override
+    public String toString() {
+        return "Poupanca{" +
+                "agencia=" + agencia +
+                ", numero=" + numero +
+                ", saldo=" + saldo +
+                ", cliente=" + cliente +
+                '}';
     }
 
     @Override

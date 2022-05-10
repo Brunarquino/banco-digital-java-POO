@@ -31,8 +31,13 @@ public abstract class Conta implements Servicos {
     private static int SEQUENCIAL = 1;
 
     public Conta(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Conta(Cliente cliente, double saldo) {
         this.agencia = AGENCIA_PADRAO;
         this.numero = SEQUENCIAL++;
+        this.saldo = saldo;
         this.cliente = cliente;
     }
 
