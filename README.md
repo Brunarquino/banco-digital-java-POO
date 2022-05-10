@@ -1,5 +1,4 @@
 
-🔴**OBS.: Não finalizado ainda**🔴
 # Banco Digital com Java e Orientação a objetos 🏦
 
 Banco Digital onde o cliente pode:
@@ -8,7 +7,6 @@ Banco Digital onde o cliente pode:
 - Depositar
 - Sacar
 - Tranferir
-- Ver meu saldo
 - Ver Meu Extrato
 
 **Bootcamp GFT Start Woman Java**
