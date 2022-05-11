@@ -2,12 +2,15 @@
 # Banco Digital com Java e Orientação a objetos 🏦
 
 Banco Digital onde o cliente pode:
-- Criar uma Conta
-- Acessar a conta 
-- Depositar
-- Sacar
-- Tranferir
-- Ver Meu Extrato
+- Cliente pode criar Dois tipos de conta:
+  - Corrente
+  - Poupança
+
+- Na conta podemos:
+  - Sacar
+  - Depositar
+  - Tranferir
+  - Verificar saldo
 
 **Bootcamp GFT Start Woman Java**
 
