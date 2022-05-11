@@ -12,30 +12,13 @@ public class Main {
 
 		Map<Integer, Conta> contasPoupanca = new HashMap<>();
 		Map<Integer, Conta> contasCorrente = new HashMap<>();
-		int resposta = 0;
+
+		int resposta = 1000;
 
 		do{
-
-			do {
-				System.out.println("\t===== Banco Digital BA =====\t");
-				System.out.println("\t==== Seja Bem vindo(a)! ====\t");
-				System.out.println("1 - Acessar Conta");
-				System.out.println("2 - Criar Conta");
-				System.out.println("3 - Sair do banco");
-				String respostaS = scan.nextLine();
-				try {
-					resposta = Integer.parseInt(respostaS);
-
-				}catch (NumberFormatException e){
-					System.out.println("\n");
-				}
-				if(resposta != 1 & resposta != 2 & resposta != 3){
-					System.out.println("Valor Invalido!");
-				}
-			}while (resposta != 1 & resposta != 2 & resposta != 3);
-			if(resposta == 3)break;
-
-
+			resposta = 1000;
+			resposta = menuPrincipal(resposta, scan);
+			if(resposta == 0)break;
 
 			switch (resposta){
 				case 1:
@@ -43,12 +26,9 @@ public class Main {
 					clienteNumeroAcesso  = scan.nextInt();
 					boolean existeContaPoupaca = false;
 					boolean existeContaCorrente = false;
-					for (Map.Entry<Integer, Conta> contas : contasCorrente.entrySet()) {
-						if(contas.getKey() == clienteNumeroAcesso) existeContaCorrente = true;
-					}
-					for (Map.Entry<Integer, Conta> contas : contasPoupanca.entrySet()) {
-						if(contas.getKey() == clienteNumeroAcesso) existeContaPoupaca = true;
-					}
+
+					if(contasCorrente.containsKey(clienteNumeroAcesso) == true) existeContaCorrente = true;
+					if(contasPoupanca.containsKey(clienteNumeroAcesso) == true) existeContaPoupaca = true;
 
 					if(existeContaCorrente == true & existeContaPoupaca == true){
 
@@ -62,40 +42,124 @@ public class Main {
 						AcessarContaPoupanca(clienteNumeroAcesso);
 					}else{
 						System.out.println("Conta não existe!");
-						resposta = 3;
 					}
-					if(resposta == 3)break;
 
 					break;
 				case 2:
-					numeroAcesso++;
-					System.out.println("Digite seu nome: ");
-					String nome = scan.nextLine();
 					Cliente cliente = new Cliente();
-					cliente.setNome(nome);
-					resposta = decidirQualTipoDeContaCriar(resposta, nome, numeroAcesso, scan);
+					resposta = verificarSeTemUmaContaCriada(numeroAcesso, clienteNumeroAcesso, resposta, scan);
+					String nome = "";
+					if(resposta == 1){
+						System.out.println("Digite seu número de Identificação");
+						clienteNumeroAcesso  = scan.nextInt();
+						boolean existeContaPoupaca2 = false;
+						boolean existeContaCorrente2 = false;
+
+						if(contasCorrente.containsKey(clienteNumeroAcesso) == true) existeContaCorrente2 = true;
+						if(contasPoupanca.containsKey(clienteNumeroAcesso) == true) existeContaPoupaca2 = true;
+
+						if(existeContaCorrente2 == true & existeContaPoupaca2 == true){
+							System.out.println("Você ja possui os dois tipos de conta");
+							continue;
+						} else if (existeContaCorrente2 == true) {
+							resposta = 2;
+							for(Map.Entry<Integer, Conta> conta : contasCorrente.entrySet()) {
+								if (conta.getKey().equals(clienteNumeroAcesso)) {
+									nome = conta.getValue().cliente.getNome();
+								}
+							}
+							System.out.println("criando conta poupança");
+
+						}else if(existeContaPoupaca2 == true){
+							resposta = 1;
+							for(Map.Entry<Integer, Conta> conta : contasPoupanca.entrySet())  {
+								if (conta.getKey().equals(clienteNumeroAcesso)) {
+									nome = conta.getValue().cliente.getNome();
+								}
+							}
+							System.out.println("criando conta corrente");
+
+						}
+
+						cliente.setNome(nome);
+
+					} else{
+						numeroAcesso++;
+						clienteNumeroAcesso = numeroAcesso;
+						System.out.println("Digite seu nome: ");
+						nome = scan.nextLine();
+						cliente.setNome(nome);
+						resposta = decidirQualTipoDeContaCriar(resposta, nome, clienteNumeroAcesso, scan);
+					}
 
 					switch (resposta){
 						case 1:
-							contasCorrente.put(numeroAcesso, new Corrente(cliente, 0d));
+							contasCorrente.put(clienteNumeroAcesso, new Corrente(cliente, 0d));
+							System.out.println("\nConta Corrente criada com sucesso!");
 							break;
 						case 2:
-							contasPoupanca.put(numeroAcesso, new Poupanca(cliente, 0d));
+							contasPoupanca.put(clienteNumeroAcesso, new Poupanca(cliente, 0d));
+							System.out.println("\nConta Poupança criada com sucesso!");
 							break;
 						default:
 							break;
 					}
-					System.out.println("\nConta criada com sucesso!");
+
 					break;
 				default:
 					break;
 			}
 
-		}while (resposta == 100);
+		}while (resposta != 100);
 
 		System.out.println("Finalizou o programa!");
 
     }
+
+	private static int menuPrincipal(int resposta, Scanner scan) {
+
+		do {
+			System.out.println("\t===== Banco Digital BA =====\t");
+			System.out.println("\t==== Seja Bem vindo(a)! ====\t");
+			System.out.println("1 - Acessar Conta");
+			System.out.println("2 - Criar Conta");
+			System.out.println("0 - Sair do banco");
+			String respostaS = scan.nextLine();
+			try {
+				resposta = Integer.parseInt(respostaS);
+
+			}catch (NumberFormatException e){
+				System.out.println("\n");
+			}
+			if(resposta != 1 & resposta != 2 & resposta != 0){
+				System.out.println("Valor Invalido!");
+			}
+		}while (resposta != 1 & resposta != 2 & resposta != 0);
+
+		return resposta;
+	}
+
+	private static int verificarSeTemUmaContaCriada(Integer numeroAcesso, Integer clienteNumeroAcesso, int resposta, Scanner scan) {
+
+		do {
+			System.out.println( "Já possui conta e deseja criar um tipo de conta nova?" );
+			System.out.println("1 - Sim");
+			System.out.println("2 - Não");
+			String respostaS = scan.nextLine();
+			try {
+				resposta = Integer.parseInt(respostaS);
+
+			}catch (NumberFormatException e){
+				System.out.println("\n");
+			}
+			if(resposta != 1 & resposta != 2){
+				System.out.println("Valor Invalido!");
+			}
+		}while (resposta != 1 & resposta != 2);
+
+		return resposta;
+
+	}
 
 	private static int decidirQualTipoDeContaCriar(int resposta, String nome, Integer numeroAcesso, Scanner scan) {
 		do {
@@ -140,14 +204,14 @@ public class Main {
 
 	private static void AcessarContaCorrente(Integer ClienteNumeroAcesso) {
 
-		System.out.println("Abri conta corrente");
+		System.out.println(ClienteNumeroAcesso + " Abrir conta corrente");
 
 
 	}
 
 	private static void AcessarContaPoupanca(Integer ClienteNumeroAcesso) {
 
-		System.out.println("Abri conta corrente");
+		System.out.println(ClienteNumeroAcesso + " Abrir conta Poupanca");
 
 	}
 
