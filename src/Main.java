@@ -21,6 +21,7 @@ public class Main {
 				System.out.println("\t==== Seja Bem vindo(a)! ====\t");
 				System.out.println("1 - Acessar Conta");
 				System.out.println("2 - Criar Conta");
+				System.out.println("3 - Sair do banco");
 				String respostaS = scan.nextLine();
 				try {
 					resposta = Integer.parseInt(respostaS);
@@ -28,17 +29,43 @@ public class Main {
 				}catch (NumberFormatException e){
 					System.out.println("\n");
 				}
-				if(resposta != 1 & resposta != 2){
+				if(resposta != 1 & resposta != 2 & resposta != 3){
 					System.out.println("Valor Invalido!");
 				}
-			}while (resposta != 1 & resposta != 2);
+			}while (resposta != 1 & resposta != 2 & resposta != 3);
+			if(resposta == 3)break;
+
 
 
 			switch (resposta){
 				case 1:
 					System.out.println("Digite seu número de Identificação");
 					clienteNumeroAcesso  = scan.nextInt();
-					AcessarConta(clienteNumeroAcesso);
+					boolean existeContaPoupaca = false;
+					boolean existeContaCorrente = false;
+					for (Map.Entry<Integer, Conta> contas : contasCorrente.entrySet()) {
+						if(contas.getKey() == clienteNumeroAcesso) existeContaCorrente = true;
+					}
+					for (Map.Entry<Integer, Conta> contas : contasPoupanca.entrySet()) {
+						if(contas.getKey() == clienteNumeroAcesso) existeContaPoupaca = true;
+					}
+
+					if(existeContaCorrente == true & existeContaPoupaca == true){
+
+						resposta = decidirQualTipoDeContaAbrir(resposta, clienteNumeroAcesso, scan);
+						if(resposta == 1)AcessarContaCorrente(clienteNumeroAcesso);
+						else AcessarContaPoupanca(clienteNumeroAcesso);
+
+					} else if (existeContaCorrente == true) {
+						AcessarContaCorrente(clienteNumeroAcesso);
+					}else if(existeContaPoupaca == true){
+						AcessarContaPoupanca(clienteNumeroAcesso);
+					}else{
+						System.out.println("Conta não existe!");
+						resposta = 3;
+					}
+					if(resposta == 3)break;
+
 					break;
 				case 2:
 					numeroAcesso++;
@@ -51,7 +78,6 @@ public class Main {
 					switch (resposta){
 						case 1:
 							contasCorrente.put(numeroAcesso, new Corrente(cliente, 0d));
-
 							break;
 						case 2:
 							contasPoupanca.put(numeroAcesso, new Poupanca(cliente, 0d));
@@ -59,12 +85,15 @@ public class Main {
 						default:
 							break;
 					}
+					System.out.println("\nConta criada com sucesso!");
 					break;
 				default:
 					break;
 			}
 
 		}while (resposta == 100);
+
+		System.out.println("Finalizou o programa!");
 
     }
 
@@ -89,7 +118,36 @@ public class Main {
 		return resposta;
 	}
 
-	private static void AcessarConta(Integer ClienteNumeroAcesso) {
+	private static int decidirQualTipoDeContaAbrir(int resposta, Integer clienteNumeroAcesso, Scanner scan) {
+		do {
+			System.out.println("Você deseja entrar em qual conta? ");
+			System.out.println("1 - Corrente");
+			System.out.println("2 - Poupança");
+			String respostaS = scan.nextLine();
+			try {
+				resposta = Integer.parseInt(respostaS);
+
+			}catch (NumberFormatException e){
+				System.out.println("\n");
+			}
+			if(resposta != 1 & resposta != 2){
+				System.out.println("Valor Invalido!");
+			}
+		}while (resposta != 1 & resposta != 2);
+
+		return resposta;
+	}
+
+	private static void AcessarContaCorrente(Integer ClienteNumeroAcesso) {
+
+		System.out.println("Abri conta corrente");
+
+
+	}
+
+	private static void AcessarContaPoupanca(Integer ClienteNumeroAcesso) {
+
+		System.out.println("Abri conta corrente");
 
 	}
 
