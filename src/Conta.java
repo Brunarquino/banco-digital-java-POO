@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 //Classe Base
 //Abstração dessa classe garante que ninguem vai instanciar elas
 //Só pode extanciar suas subclasses
@@ -30,10 +27,6 @@ public abstract class Conta implements Servicos {
     private static final int AGENCIA_PADRAO = 1;
     private static int SEQUENCIAL = 1;
 
-    public Conta(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     public Conta(Cliente cliente, double saldo) {
         this.agencia = AGENCIA_PADRAO;
         this.numero = SEQUENCIAL++;
@@ -41,10 +34,17 @@ public abstract class Conta implements Servicos {
         this.cliente = cliente;
     }
 
+
+
     @Override
     public void sacar(double valor) {
-        if(verificarSeTemValor(valor) ==  true)saldo -= valor;
-        else System.out.println("Você não tem essa quantia");
+
+        if(verificarSeTemValor(valor) ==  true){
+            saldo -= valor;
+            System.out.println("Valor de " + valor + " foi sacado do seu saldo!");
+        } else System.out.println("Você não tem essa quantia");
+
+
     }
 
     @Override
@@ -60,6 +60,7 @@ public abstract class Conta implements Servicos {
         }else{
             System.out.println("Você não tem essa quantia");
         }
+
 
     }
 

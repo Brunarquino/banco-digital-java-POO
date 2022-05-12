@@ -6,9 +6,7 @@ public class Poupanca extends Conta{
         super(cliente, saldo);
     }
 
-    public Poupanca(Cliente cliente) {
-        super(cliente);
-    }
+
 
     @Override
     public String toString() {

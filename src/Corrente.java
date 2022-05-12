@@ -5,9 +5,7 @@ public class Corrente extends Conta{
         super(cliente, saldo);
     }
 
-    public Corrente(Cliente cliente) {
-        super(cliente);
-    }
+
 
     @Override
     public String toString() {
